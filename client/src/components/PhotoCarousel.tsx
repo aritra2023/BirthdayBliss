@@ -89,22 +89,24 @@ export default function PhotoStack({ photos, className = '' }: PhotoStackProps) 
                   data-testid={`photo-${index}`}
                 >
                   <div className="relative bg-white dark:bg-card rounded-2xl overflow-hidden">
-                    {/* Actual Image */}
-                    <img 
-                      src={photo.src} 
-                      alt={`Memory ${index + 1}`}
-                      className="w-full h-auto object-contain max-h-[400px] sm:max-h-[500px]"
-                      style={{ 
-                        aspectRatio: 'auto',
-                        minHeight: '200px'
-                      }}
-                      onError={(e) => {
-                        // Fallback to placeholder if image fails to load
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        target.nextElementSibling?.classList.remove('hidden');
-                      }}
-                    />
+                    {/* Image Container with Equal Padding */}
+                    <div className="p-4 sm:p-6 flex items-center justify-center">
+                      <img 
+                        src={photo.src} 
+                        alt={`Memory ${index + 1}`}
+                        className="max-w-full h-auto object-contain max-h-[350px] sm:max-h-[450px] rounded-lg shadow-sm"
+                        style={{ 
+                          aspectRatio: 'auto',
+                          minHeight: '180px'
+                        }}
+                        onError={(e) => {
+                          // Fallback to placeholder if image fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                    </div>
                     {/* Fallback placeholder */}
                     <div className="absolute inset-0 flex items-center justify-center text-center text-muted-foreground hidden">
                       <div>
