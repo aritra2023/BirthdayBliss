@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Calendar, Clock, Timer, Star } from 'lucide-react';
 
 interface LoveCounterProps {
   startDate: Date;
@@ -11,6 +12,16 @@ interface TimeUnit {
   label: string;
   icon: string;
 }
+
+const getCounterIcon = (iconName: string) => {
+  const iconMap: { [key: string]: any } = {
+    'calendar': Calendar,
+    'clock': Clock,
+    'timer': Timer,
+    'star': Star,
+  };
+  return iconMap[iconName] || Star;
+};
 
 export default function LoveCounter({ startDate, className = '' }: LoveCounterProps) {
   const [timeUnits, setTimeUnits] = useState<TimeUnit[]>([]);
@@ -26,10 +37,10 @@ export default function LoveCounter({ startDate, className = '' }: LoveCounterPr
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
       setTimeUnits([
-        { value: days, label: 'Days', icon: '📅' },
-        { value: hours, label: 'Hours', icon: '⏰' },
-        { value: minutes, label: 'Minutes', icon: '⏱️' },
-        { value: seconds, label: 'Seconds', icon: '💫' }
+        { value: days, label: 'Days', icon: 'calendar' },
+        { value: hours, label: 'Hours', icon: 'clock' },
+        { value: minutes, label: 'Minutes', icon: 'timer' },
+        { value: seconds, label: 'Seconds', icon: 'star' }
       ]);
     };
 
@@ -72,7 +83,12 @@ export default function LoveCounter({ startDate, className = '' }: LoveCounterPr
               whileHover={{ scale: 1.05 }}
               data-testid={`counter-${unit.label.toLowerCase()}`}
             >
-              <div className="text-3xl mb-2">{unit.icon}</div>
+              <div className="flex justify-center mb-2">
+                {(() => {
+                  const IconComponent = getCounterIcon(unit.icon);
+                  return <IconComponent className="w-8 h-8 text-primary" />;
+                })()}
+              </div>
               <motion.div
                 className="text-3xl md:text-4xl font-bold text-primary mb-2"
                 key={unit.value}

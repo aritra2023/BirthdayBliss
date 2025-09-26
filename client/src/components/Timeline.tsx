@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { Sparkles, Heart, Mountain, Home, TreePine } from 'lucide-react';
 
 interface TimelineEvent {
   id: string;
@@ -9,6 +10,17 @@ interface TimelineEvent {
   description: string;
   icon: string;
 }
+
+const getIconComponent = (iconName: string) => {
+  const iconMap: { [key: string]: any } = {
+    'sparkles': Sparkles,
+    'heart': Heart,
+    'mountain': Mountain,
+    'home': Home,
+    'tree': TreePine,
+  };
+  return iconMap[iconName] || Sparkles;
+};
 
 interface TimelineProps {
   events: TimelineEvent[];
@@ -38,7 +50,12 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
           transition={{ type: "spring", stiffness: 300 }}
         >
           <div className="flex items-center mb-3">
-            <span className="text-2xl mr-3">{event.icon}</span>
+            <div className="w-8 h-8 mr-3 text-primary">
+              {(() => {
+                const IconComponent = getIconComponent(event.icon);
+                return <IconComponent className="w-6 h-6" />;
+              })()}
+            </div>
             <h3 className="font-romantic text-xl text-primary font-semibold">
               {event.title}
             </h3>
@@ -54,14 +71,17 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
 
       {/* Center Icon */}
       <div className="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-primary rounded-full flex items-center justify-center z-10 shadow-lg">
-        <motion.span
-          className="text-xl"
+        <motion.div
           initial={{ scale: 0 }}
           animate={isInView ? { scale: 1 } : { scale: 0 }}
           transition={{ duration: 0.3, delay: index * 0.2 + 0.3 }}
+          className="text-primary-foreground"
         >
-          {event.icon}
-        </motion.span>
+          {(() => {
+            const IconComponent = getIconComponent(event.icon);
+            return <IconComponent className="w-5 h-5" />;
+          })()}
+        </motion.div>
       </div>
     </motion.div>
   );
