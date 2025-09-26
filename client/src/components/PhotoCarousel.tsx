@@ -55,48 +55,40 @@ export default function PhotoStack({ photos, className = '' }: PhotoStackProps) 
         <div className="relative max-w-md sm:max-w-lg mx-auto px-2">
           {/* Photo Stack */}
           <div className="relative min-h-[500px] flex flex-col items-center justify-center">
-            <div className="relative w-full">
+            <div className="relative w-full space-y-4">
               {photos.slice(0, revealedCount).map((photo, index) => (
                 <motion.div
                   key={photo.id}
-                  className="relative rounded-2xl overflow-hidden shadow-2xl bg-card mb-6 cursor-pointer mx-auto"
-                  style={{
-                    zIndex: photos.length - index,
-                    position: index === revealedCount - 1 ? 'relative' : 'absolute',
-                    top: index === revealedCount - 1 ? 0 : `${index * 8}px`,
-                    left: '50%',
-                    transform: index === revealedCount - 1 ? 'none' : 'translateX(-50%)',
-                    width: index === revealedCount - 1 ? '100%' : `${100 - index * 3}%`
-                  }}
+                  className="relative rounded-2xl overflow-hidden shadow-2xl bg-card cursor-pointer w-full"
                   initial={{ 
                     opacity: 0, 
-                    y: 60,
-                    scale: 0.8,
-                    rotateZ: Math.random() * 8 - 4 // Random slight rotation
+                    y: 100,
+                    scale: 0.9,
+                    rotateY: -15
                   }}
                   animate={{ 
                     opacity: 1, 
                     y: 0,
                     scale: 1,
-                    rotateZ: index === revealedCount - 1 ? 0 : Math.random() * 4 - 2
+                    rotateY: 0
                   }}
                   transition={{ 
-                    duration: 0.8, 
-                    delay: index * 0.15,
+                    duration: 0.6, 
+                    delay: index * 0.2,
                     type: "spring",
-                    stiffness: 120,
+                    stiffness: 100,
                     damping: 20
                   }}
                   whileHover={{ 
-                    scale: index === revealedCount - 1 ? 1.03 : 1.01,
-                    rotateZ: 0,
-                    transition: { duration: 0.3 }
+                    scale: 1.02,
+                    y: -5,
+                    transition: { duration: 0.2 }
                   }}
-                  whileTap={{ scale: 0.97 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={index === revealedCount - 1 ? revealNext : undefined}
                   data-testid={`photo-${index}`}
                 >
-                  <div className="relative bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl overflow-hidden">
+                  <div className="relative bg-white dark:bg-card rounded-2xl overflow-hidden">
                     {/* Actual Image */}
                     <img 
                       src={photo.src} 
