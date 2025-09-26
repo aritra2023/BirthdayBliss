@@ -157,7 +157,7 @@ export default function Timeline({ events, className = '' }: TimelineProps) {
         <div className="relative" ref={ref}>
           {/* Mobile Center Line */}
           <motion.div
-            className="md:hidden absolute left-10 top-10 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent"
+            className="md:hidden absolute left-9 top-10 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent"
             initial={{ height: 0 }}
             animate={isInView ? { height: '90%' } : { height: 0 }}
             transition={{ duration: 2, ease: "easeInOut" }}
