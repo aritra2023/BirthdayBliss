@@ -28,26 +28,42 @@ Today isn't just about celebrating another year of your amazing life - it's abou
 
 Happy Birthday, beautiful! I love you more than words could ever express. ❤️`;
 
+  // Import photos
   const photos = [
     {
       id: '1',
-      src: '/api/placeholder/400/300',
-      caption: 'Our first date at the coffee shop where we talked for hours ☕'
+      src: new URL('../../../attached_assets/WhatsApp Image 2025-09-27 at 02.41.20_71532eaa_1758922010754.jpg', import.meta.url).href,
+      caption: 'Our first video call 💕'
     },
     {
       id: '2', 
-      src: '/api/placeholder/400/300',
-      caption: 'That amazing sunset during our weekend getaway 🌅'
+      src: new URL('../../../attached_assets/WhatsApp Image 2025-09-27 at 02.41.19_9cf81b1c_1758922030634.jpg', import.meta.url).href,
+      caption: 'Ek sath tuition jana - Together through every lesson 📚'
     },
     {
       id: '3',
-      src: '/api/placeholder/400/300', 
-      caption: 'Laughing together at the park - you make everything more fun! 😄'
+      src: new URL('../../../attached_assets/WhatsApp Image 2025-09-27 at 02.41.19_b1b35cb0_1758922037145.jpg', import.meta.url).href, 
+      caption: 'Game khelna ek sath - Playing games together, making memories 🎮'
     },
     {
       id: '4',
-      src: '/api/placeholder/400/300',
-      caption: 'Celebrating your last birthday - and now here we are again! 🎂'
+      src: new URL('../../../attached_assets/WhatsApp Image 2025-09-27 at 02.41.20_1b90f551_1758922049819.jpg', import.meta.url).href,
+      caption: 'Dono ka haar hapte ka momo date - Our weekly momo tradition 🥟'
+    },
+    {
+      id: '5',
+      src: new URL('../../../attached_assets/WhatsApp Image 2025-09-27 at 02.41.20_4ab0d124_1758922061413.jpg', import.meta.url).href,
+      caption: 'First movie date - Lost in the story, found in each other 🎬'
+    },
+    {
+      id: '6',
+      src: new URL('../../../attached_assets/WhatsApp Image 2025-09-27 at 02.41.19_ac923fee_1758922080619.jpg', import.meta.url).href,
+      caption: 'First planned outing - The beginning of our adventures together ✨'
+    },
+    {
+      id: '7',
+      src: new URL('../../../attached_assets/WhatsApp Image 2025-09-27 at 02.41.18_bb0f31f6_1758922088573.jpg', import.meta.url).href,
+      caption: 'লজ্জাবতী লতা আমার (B) - আমার মনের মাঝে তুমি চিরকাল 💖'
     }
   ];
 

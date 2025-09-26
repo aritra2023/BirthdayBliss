@@ -52,43 +52,60 @@ export default function PhotoStack({ photos, className = '' }: PhotoStackProps) 
           Our Beautiful Memories 💕
         </motion.h2>
 
-        <div className="relative max-w-md mx-auto">
+        <div className="relative max-w-md sm:max-w-lg mx-auto px-2">
           {/* Photo Stack */}
-          <div className="relative min-h-[400px] flex flex-col items-center justify-center">
+          <div className="relative min-h-[500px] flex flex-col items-center justify-center">
             <div className="relative w-full">
               {photos.slice(0, revealedCount).map((photo, index) => (
                 <motion.div
                   key={photo.id}
-                  className="relative rounded-2xl overflow-hidden shadow-xl bg-card mb-4 cursor-pointer"
+                  className="relative rounded-2xl overflow-hidden shadow-2xl bg-card mb-6 cursor-pointer mx-auto"
+                  style={{
+                    zIndex: photos.length - index,
+                    position: index === revealedCount - 1 ? 'relative' : 'absolute',
+                    top: index === revealedCount - 1 ? 0 : `${index * 8}px`,
+                    left: '50%',
+                    transform: index === revealedCount - 1 ? 'none' : 'translateX(-50%)',
+                    width: index === revealedCount - 1 ? '100%' : `${100 - index * 3}%`
+                  }}
                   initial={{ 
                     opacity: 0, 
-                    y: 50,
-                    scale: 0.9,
-                    rotateZ: Math.random() * 6 - 3 // Random slight rotation
+                    y: 60,
+                    scale: 0.8,
+                    rotateZ: Math.random() * 8 - 4 // Random slight rotation
                   }}
                   animate={{ 
                     opacity: 1, 
                     y: 0,
                     scale: 1,
-                    rotateZ: 0
+                    rotateZ: index === revealedCount - 1 ? 0 : Math.random() * 4 - 2
                   }}
                   transition={{ 
-                    duration: 0.6, 
-                    delay: index * 0.2,
+                    duration: 0.8, 
+                    delay: index * 0.15,
                     type: "spring",
-                    stiffness: 100
+                    stiffness: 120,
+                    damping: 20
                   }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ 
+                    scale: index === revealedCount - 1 ? 1.03 : 1.01,
+                    rotateZ: 0,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={index === revealedCount - 1 ? revealNext : undefined}
                   data-testid={`photo-${index}`}
                 >
-                  <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center relative overflow-hidden">
+                  <div className="relative bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl overflow-hidden">
                     {/* Actual Image */}
                     <img 
                       src={photo.src} 
                       alt={`Memory ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-auto object-contain max-h-[400px] sm:max-h-[500px]"
+                      style={{ 
+                        aspectRatio: 'auto',
+                        minHeight: '200px'
+                      }}
                       onError={(e) => {
                         // Fallback to placeholder if image fails to load
                         const target = e.target as HTMLImageElement;
@@ -101,7 +118,7 @@ export default function PhotoStack({ photos, className = '' }: PhotoStackProps) 
                       <div>
                         <div className="text-6xl mb-4">📸</div>
                         <p className="text-lg">Memory {index + 1}</p>
-                        <p className="text-sm mt-2 max-w-xs mx-auto">{photo.src}</p>
+                        <p className="text-sm mt-2 max-w-xs mx-auto opacity-60">Loading image...</p>
                       </div>
                     </div>
                     
@@ -126,7 +143,7 @@ export default function PhotoStack({ photos, className = '' }: PhotoStackProps) 
                   </div>
                   
                   {/* Caption */}
-                  <div className="p-4 sm:p-6 bg-card">
+                  <div className="p-4 sm:p-6 bg-card/95 backdrop-blur-sm">
                     <p className="text-center text-card-foreground font-display text-sm sm:text-base leading-relaxed">
                       {photo.caption}
                     </p>
