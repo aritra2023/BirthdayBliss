@@ -63,7 +63,7 @@ export default function FloatingHeartCursor() {
             scale: 1,
             y: heart.y - 100,
           }}
-          transition={{ duration: 2, ease: "easeOut" }}
+          transition={{ duration: 2.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           ❤️
         </motion.div>

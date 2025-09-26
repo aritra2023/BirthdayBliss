@@ -18,7 +18,7 @@ export default function HeroSection({ girlfriendName, onEnterSite }: HeroSection
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
+          transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
           className="space-y-8"
         >
           {/* Main Title */}
@@ -26,7 +26,7 @@ export default function HeroSection({ girlfriendName, onEnterSite }: HeroSection
             className="text-6xl md:text-8xl font-romantic font-bold text-primary animate-glow"
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
-            transition={{ duration: 1.2, delay: 1 }}
+            transition={{ duration: 1.2, delay: 1, ease: "easeOut" }}
             data-testid="hero-title"
           >
             Happy Birthday
@@ -36,7 +36,7 @@ export default function HeroSection({ girlfriendName, onEnterSite }: HeroSection
             className="text-5xl md:text-7xl font-elegant text-primary animate-heartbeat"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 2 }}
+            transition={{ duration: 1, delay: 2, ease: "easeOut" }}
             data-testid="hero-name"
           >
             {girlfriendName} ❤️
@@ -47,7 +47,7 @@ export default function HeroSection({ girlfriendName, onEnterSite }: HeroSection
             className="text-xl md:text-2xl text-muted-foreground font-display max-w-2xl mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 2.5 }}
+            transition={{ duration: 1, delay: 2.5, ease: "easeOut" }}
             data-testid="hero-subtitle"
           >
             Today is all about celebrating the most amazing person in my world 💕
@@ -57,7 +57,7 @@ export default function HeroSection({ girlfriendName, onEnterSite }: HeroSection
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 3 }}
+            transition={{ duration: 0.8, delay: 3, ease: "easeOut" }}
           >
             <button
               onClick={onEnterSite}

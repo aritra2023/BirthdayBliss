@@ -58,7 +58,7 @@ export default function FireworksEnding({ className = '' }: FireworksEndingProps
             className="text-6xl md:text-8xl font-romantic font-bold text-primary animate-glow"
             initial={{ y: 50 }}
             whileInView={{ y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
             data-testid="ending-title"
           >
             I Love You
@@ -68,7 +68,7 @@ export default function FireworksEnding({ className = '' }: FireworksEndingProps
             className="text-5xl md:text-7xl font-elegant text-primary animate-heartbeat"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
+            transition={{ duration: 1, delay: 1, ease: "easeOut" }}
             data-testid="ending-forever"
           >
             Forever ❤️

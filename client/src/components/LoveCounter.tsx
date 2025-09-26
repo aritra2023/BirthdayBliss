@@ -57,7 +57,7 @@ export default function LoveCounter({ startDate, className = '' }: LoveCounterPr
           className="text-4xl md:text-5xl font-romantic text-primary mb-4"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           data-testid="counter-title"
         >
           Time We've Been Together
@@ -67,7 +67,7 @@ export default function LoveCounter({ startDate, className = '' }: LoveCounterPr
           className="text-lg text-muted-foreground mb-12 font-display"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         >
           Every moment with you is a treasure ✨
         </motion.p>
@@ -79,7 +79,7 @@ export default function LoveCounter({ startDate, className = '' }: LoveCounterPr
               className="bg-card rounded-2xl p-6 shadow-lg hover-elevate"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
               whileHover={{ scale: 1.05 }}
               data-testid={`counter-${unit.label.toLowerCase()}`}
             >
@@ -94,7 +94,7 @@ export default function LoveCounter({ startDate, className = '' }: LoveCounterPr
                 key={unit.value}
                 initial={{ scale: 1.2, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
               >
                 {unit.value.toLocaleString()}
               </motion.div>
@@ -109,7 +109,7 @@ export default function LoveCounter({ startDate, className = '' }: LoveCounterPr
           className="mt-12 p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
         >
           <p className="text-lg font-display text-card-foreground">
             "In all the time we've been together, you continue to make my heart skip a beat every single day 💝"

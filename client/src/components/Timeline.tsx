@@ -39,7 +39,7 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
       className="relative mb-8 md:mb-16"
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
       data-testid={`timeline-item-${index}`}
     >
       {/* Mobile Layout */}
@@ -49,7 +49,7 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
           <motion.div
             initial={{ scale: 0 }}
             animate={isInView ? { scale: 1 } : { scale: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 + 0.2 }}
+            transition={{ duration: 0.5, delay: index * 0.1 + 0.2, ease: "easeOut" }}
             className="text-primary-foreground"
           >
             {(() => {
@@ -64,7 +64,7 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
           <motion.div
             className="bg-card rounded-xl p-4 shadow-lg hover-elevate"
             whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
           >
             <h3 className="font-romantic text-lg text-primary font-semibold mb-1">
               {event.title}
@@ -88,7 +88,7 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
             whileHover={{ scale: 1.02 }}
             initial={{ opacity: 0, x: isEven ? -50 : 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isEven ? -50 : 50 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
+            transition={{ duration: 0.8, delay: index * 0.2, ease: "easeOut" }}
           >
             <div className="flex items-center mb-3">
               <div className="w-8 h-8 mr-3 text-primary">
@@ -160,7 +160,7 @@ export default function Timeline({ events, className = '' }: TimelineProps) {
             className="md:hidden absolute left-9 top-10 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent"
             initial={{ height: 0 }}
             animate={isInView ? { height: '90%' } : { height: 0 }}
-            transition={{ duration: 2, ease: "easeInOut" }}
+            transition={{ duration: 2.5, ease: "easeOut" }}
           />
 
           {/* Desktop Center Line */}
@@ -168,7 +168,7 @@ export default function Timeline({ events, className = '' }: TimelineProps) {
             className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent"
             initial={{ height: 0 }}
             animate={isInView ? { height: '100%' } : { height: 0 }}
-            transition={{ duration: 2, ease: "easeInOut" }}
+            transition={{ duration: 2.5, ease: "easeOut" }}
             style={{ top: '48px' }}
           />
 
