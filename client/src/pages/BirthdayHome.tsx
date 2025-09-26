@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import HeroSection from '@/components/HeroSection';
 import TypewriterText from '@/components/TypewriterText';
-import PhotoCarousel from '@/components/PhotoCarousel';
+import PhotoStack from '@/components/PhotoCarousel';
 import Timeline from '@/components/Timeline';
 import LoveCounter from '@/components/LoveCounter';
 import GiftBox from '@/components/GiftBox';
@@ -180,7 +180,7 @@ Happy Birthday, beautiful! I love you more than words could ever express. ❤️
                   className="space-y-0"
                 >
                   {/* Photo Gallery */}
-                  <PhotoCarousel photos={photos} className="bg-gradient-to-br from-background to-secondary/10" />
+                  <PhotoStack photos={photos} className="bg-gradient-to-br from-background to-secondary/10" />
                   
                   {/* Timeline */}
                   <Timeline events={timelineEvents} className="bg-gradient-to-br from-secondary/10 to-primary/10" />

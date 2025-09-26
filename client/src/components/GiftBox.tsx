@@ -47,7 +47,7 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
     <section className={`py-16 px-4 ${className}`} data-testid="gift-box">
       <div className="max-w-4xl mx-auto text-center">
         <motion.h2
-          className="text-4xl md:text-5xl font-romantic text-primary mb-8"
+          className="text-3xl md:text-4xl lg:text-5xl font-romantic text-primary mb-6 md:mb-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -56,9 +56,9 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
           A Special Gift Just For You 🎁
         </motion.h2>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center items-center min-h-[200px]">
           <motion.div
-            className="relative"
+            className="relative w-full max-w-2xl mx-auto"
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -69,12 +69,12 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
                 <motion.button
                   key="closed-box"
                   onClick={handleOpenGift}
-                  className="relative group cursor-pointer hover-elevate"
+                  className="relative group cursor-pointer hover-elevate mx-auto block"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   data-testid="button-open-gift"
                 >
-                  <div className="w-32 h-32 bg-gradient-to-br from-primary to-primary/80 rounded-2xl shadow-xl flex items-center justify-center relative overflow-hidden">
+                  <div className="w-28 h-28 sm:w-32 sm:h-32 bg-gradient-to-br from-primary to-primary/80 rounded-2xl shadow-xl flex items-center justify-center relative overflow-hidden mx-auto">
                     {/* Gift Box Decoration */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
                     <div className="absolute top-1/2 left-0 right-0 h-4 bg-yellow-300 transform -translate-y-1/2" />
@@ -88,7 +88,7 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
                       </div>
                     </div>
                     
-                    <Gift className="w-12 h-12 text-white z-10" />
+                    <Gift className="w-10 h-10 sm:w-12 sm:h-12 text-white z-10" />
                     
                     {/* Sparkles */}
                     <motion.div
@@ -101,7 +101,7 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
                   </div>
                   
                   <motion.p
-                    className="mt-4 text-muted-foreground font-display"
+                    className="mt-4 text-sm sm:text-base text-muted-foreground font-display text-center"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1 }}
@@ -112,7 +112,7 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
               ) : (
                 <motion.div
                   key="opened-box"
-                  className="bg-card rounded-2xl p-8 shadow-xl max-w-2xl"
+                  className="bg-card rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl w-full max-w-2xl mx-auto"
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.8 }}
@@ -132,12 +132,12 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
                     >
                       {/* AI Generated Poem */}
                       <div>
-                        <h3 className="font-romantic text-2xl text-primary mb-4 flex items-center justify-center">
-                          <Heart className="w-6 h-6 mr-2" />
+                        <h3 className="font-romantic text-lg sm:text-xl md:text-2xl text-primary mb-4 flex items-center justify-center">
+                          <Heart className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
                           A Poem Written Just For You
                         </h3>
-                        <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-6">
-                          <pre className="font-display text-card-foreground whitespace-pre-wrap text-center leading-relaxed">
+                        <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-4 sm:p-6">
+                          <pre className="font-display text-sm sm:text-base text-card-foreground whitespace-pre-wrap text-center leading-relaxed">
                             {aiContent.poem}
                           </pre>
                         </div>
@@ -146,7 +146,7 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
                       {/* Romantic Line */}
                       <div>
                         <motion.p
-                          className="text-xl font-elegant text-primary text-center"
+                          className="text-lg sm:text-xl font-elegant text-primary text-center"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 1 }}
