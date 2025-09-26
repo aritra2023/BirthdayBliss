@@ -72,7 +72,7 @@ export default function LoveCounter({ startDate, className = '' }: LoveCounterPr
           Every moment with you is a treasure ✨
         </motion.p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-4 gap-2 md:gap-6">
           {timeUnits.map((unit, index) => (
             <motion.div
               key={unit.label}

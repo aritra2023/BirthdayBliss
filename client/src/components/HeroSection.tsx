@@ -10,8 +10,8 @@ export default function HeroSection({ girlfriendName, onEnterSite }: HeroSection
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-card to-primary/10">
       {/* Floating Elements Background */}
-      <FloatingElements type="hearts" count={15} />
-      <FloatingElements type="balloons" count={8} />
+      <FloatingElements type="hearts" count={5} />
+      <FloatingElements type="balloons" count={3} />
       
       {/* Hero Content */}
       <div className="relative z-20 text-center px-4 max-w-4xl mx-auto">

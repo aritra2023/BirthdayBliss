@@ -36,7 +36,7 @@ export default function FloatingHeartCursor() {
       throttleTimer = setTimeout(() => {
         handleMouseMove(e);
         throttleTimer = null;
-      }, 100);
+      }, 300);
     };
 
     document.addEventListener('mousemove', throttledHandleMouseMove);

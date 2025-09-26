@@ -16,7 +16,7 @@ export default function BirthdayHome() {
 
   //todo: replace with real data
   const girlfriendName = "My Love";
-  const relationshipStartDate = new Date('2023-01-15T14:30:00');
+  const relationshipStartDate = new Date('2023-03-15T14:59:00');
   
   const personalMessage = `My dearest ${girlfriendName}, 
 
@@ -54,7 +54,7 @@ Happy Birthday, beautiful! I love you more than words could ever express. ❤️
   const timelineEvents = [
     {
       id: '1',
-      date: 'January 15, 2023',
+      date: 'March 15, 2023',
       title: 'First Meeting',
       description: 'The day our eyes first met at the coffee shop. I knew there was something special about you from that very moment.',
       icon: 'sparkles'

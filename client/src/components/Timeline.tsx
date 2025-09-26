@@ -111,7 +111,7 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
         </div>
 
         {/* Center Icon */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-primary rounded-full flex items-center justify-center z-10 shadow-lg">
+        <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-1/2 w-12 h-12 bg-primary rounded-full flex items-center justify-center z-10 shadow-lg">
           <motion.div
             initial={{ scale: 0 }}
             animate={isInView ? { scale: 1 } : { scale: 0 }}

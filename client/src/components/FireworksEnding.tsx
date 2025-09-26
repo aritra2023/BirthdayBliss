@@ -39,8 +39,8 @@ export default function FireworksEnding({ className = '' }: FireworksEndingProps
       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20" />
       
       {/* Floating Elements */}
-      <FloatingElements type="confetti" count={30} />
-      <FloatingElements type="hearts" count={20} />
+      <FloatingElements type="confetti" count={10} />
+      <FloatingElements type="hearts" count={8} />
       
       {/* Fireworks Container */}
       <div ref={fireworksRef} className="absolute inset-0 pointer-events-none" />
