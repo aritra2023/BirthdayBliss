@@ -70,38 +70,33 @@ Happy Birthday, beautiful! I love you more than words could ever express. ❤️
   const timelineEvents = [
     {
       id: '1',
-      date: 'March 15, 2025',
-      title: 'First Meeting',
-      description: 'The day our eyes first met at the coffee shop. I knew there was something special about you from that very moment.',
-      icon: 'sparkles'
+      title: 'That First Glimpse',
+      description: 'The first time I saw her in the auto, with that radiant smile. I couldn\'t stop wondering, how can someone be so effortlessly free, so open, so alive?',
+      icon: 'eye'
     },
     {
       id: '2', 
-      date: 'February 14, 2023',
-      title: 'First Date',
-      description: 'Our magical Valentine\'s day dinner where we talked until the restaurant closed. Time just stopped when I was with you.',
+      title: 'Our Beautiful Rituals',
+      description: 'Our little weekly rituals, going to study together, teasing each other endlessly, sharing momos side by side. It all feels like the most beautiful love story in its simplest form.',
       icon: 'heart'
     },
     {
       id: '3',
-      date: 'May 20, 2023', 
-      title: 'First Trip Together',
-      description: 'Our weekend getaway to the mountains. Watching the sunrise with you was when I knew I was falling deeply in love.',
-      icon: 'mountain'
+      title: 'Gaming Wars & Peace',
+      description: 'Getting mad at you while playing games, scolding you, then being the one circling around you afterwards. It\'s just so damn good, so damn peaceful.',
+      icon: 'gamepad2'
     },
     {
       id: '4',
-      date: 'August 10, 2023',
-      title: 'Moving In Together', 
-      description: 'The day we decided to share our lives and our home. Every morning with you feels like a blessing.',
-      icon: 'home'
+      title: 'The Journey Begins', 
+      description: 'That first walk with you at Victoria, step after step, felt like the beginning of something endless as if the journey of my life has only just begun with you, my love. Our road is long and I can\'t wait to walk it all with you.',
+      icon: 'map'
     },
     {
       id: '5',
-      date: 'December 25, 2023',
-      title: 'First Christmas',
-      description: 'Celebrating our first Christmas together, creating traditions that will last a lifetime. You make every holiday magical.',
-      icon: 'tree'
+      title: 'Moments That Feel Like Forever',
+      description: 'It\'s crazy how the tiniest moments with you - a smile, a fight, or just wandering around - feel heavier than forever.',
+      icon: 'infinity'
     }
   ];
 

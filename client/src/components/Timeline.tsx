@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Sparkles, Heart, Mountain, Home, TreePine } from 'lucide-react';
+import { Sparkles, Heart, Mountain, Home, TreePine, Eye, Gamepad2, Map, Infinity } from 'lucide-react';
 
 interface TimelineEvent {
   id: string;
-  date: string;
+  date?: string;
   title: string;
   description: string;
   icon: string;
@@ -18,6 +18,10 @@ const getIconComponent = (iconName: string) => {
     'mountain': Mountain,
     'home': Home,
     'tree': TreePine,
+    'eye': Eye,
+    'gamepad2': Gamepad2,
+    'map': Map,
+    'infinity': Infinity,
   };
   return iconMap[iconName] || Sparkles;
 };
@@ -69,9 +73,11 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
             <h3 className="font-romantic text-lg text-primary font-semibold mb-1">
               {event.title}
             </h3>
-            <p className="text-xs text-muted-foreground mb-2 font-medium">
-              {event.date}
-            </p>
+            {event.date && (
+              <p className="text-xs text-muted-foreground mb-2 font-medium">
+                {event.date}
+              </p>
+            )}
             <p className="text-card-foreground text-sm leading-relaxed">
               {event.description}
             </p>
@@ -101,9 +107,11 @@ function TimelineItem({ event, index }: { event: TimelineEvent; index: number })
                 {event.title}
               </h3>
             </div>
-            <p className="text-sm text-muted-foreground mb-3 font-medium">
-              {event.date}
-            </p>
+            {event.date && (
+              <p className="text-sm text-muted-foreground mb-3 font-medium">
+                {event.date}
+              </p>
+            )}
             <p className="text-card-foreground leading-relaxed">
               {event.description}
             </p>
