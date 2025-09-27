@@ -92,10 +92,11 @@ export default function VoiceMessage({ audioSrc, autoPlay = false, className = '
 
   return (
     <motion.div
-      className={`bg-gradient-to-r from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-800/20 rounded-2xl p-4 max-w-sm mx-auto ${className}`}
+      className={`bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-2xl p-4 max-w-sm mx-auto cursor-pointer ${className}`}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
+      onClick={togglePlayPause}
       data-testid="voice-message"
     >
       <audio ref={audioRef} src={audioSrc} preload="metadata" />
@@ -103,8 +104,11 @@ export default function VoiceMessage({ audioSrc, autoPlay = false, className = '
       <div className="flex items-center space-x-3">
         {/* Play/Pause Button */}
         <motion.button
-          onClick={togglePlayPause}
-          className="w-10 h-10 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center text-white shadow-lg"
+          onClick={(e) => {
+            e.stopPropagation();
+            togglePlayPause();
+          }}
+          className="w-10 h-10 bg-primary hover:bg-primary/80 rounded-full flex items-center justify-center text-primary-foreground shadow-lg"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           disabled={!isLoaded}
@@ -122,10 +126,10 @@ export default function VoiceMessage({ audioSrc, autoPlay = false, className = '
           {/* Voice Icon & Duration */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1">
-              <Volume2 className="w-4 h-4 text-green-600" />
-              <span className="text-xs text-gray-600 dark:text-gray-400">Voice Message</span>
+              <Volume2 className="w-4 h-4 text-primary" />
+              <span className="text-xs text-muted-foreground">Voice Message</span>
             </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400">
+            <span className="text-xs text-muted-foreground">
               {isLoaded ? formatTime(duration - currentTime) : '0:00'}
             </span>
           </div>
@@ -140,8 +144,8 @@ export default function VoiceMessage({ audioSrc, autoPlay = false, className = '
                   key={i}
                   className={`w-1 rounded-full transition-colors duration-150 ${
                     isActive 
-                      ? 'bg-green-500' 
-                      : 'bg-gray-300 dark:bg-gray-600'
+                      ? 'bg-primary' 
+                      : 'bg-muted'
                   }`}
                   style={{ height: `${barHeight}px` }}
                   initial={{ scaleY: 0 }}

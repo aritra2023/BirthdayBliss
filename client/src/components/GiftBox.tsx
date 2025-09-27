@@ -156,16 +156,23 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
                         </motion.p>
                       </div>
 
-                      {/* Voice Message */}
+                      {/* Voice Messages */}
                       <div className="space-y-4">
                         <h3 className="font-romantic text-lg sm:text-xl text-center text-primary">
-                          A Special Message For You 💕
+                          Special Messages For You 💕
                         </h3>
-                        <VoiceMessage 
-                          audioSrc={new URL('../../../attached_assets/WhatsApp Audio 2025-09-27 at 12.12.31_91090020.waptt_1758955432460.opus', import.meta.url).href}
-                          autoPlay={true}
-                          className="mx-auto"
-                        />
+                        <div className="space-y-3">
+                          <VoiceMessage 
+                            audioSrc={new URL('../../../attached_assets/WhatsApp Audio 2025-09-27 at 12.12.31_91090020.waptt_1758955432460.opus', import.meta.url).href}
+                            autoPlay={true}
+                            className="mx-auto"
+                          />
+                          <VoiceMessage 
+                            audioSrc={new URL('../../../attached_assets/WhatsApp Audio 2025-09-27 at 12.18.55_a67c03c1.waptt_1758955880114.opus', import.meta.url).href}
+                            autoPlay={false}
+                            className="mx-auto"
+                          />
+                        </div>
                       </div>
                     </motion.div>
                   ) : (
