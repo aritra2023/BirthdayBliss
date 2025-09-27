@@ -6,14 +6,31 @@ interface VoiceMessageProps {
   audioSrc: string;
   autoPlay?: boolean;
   className?: string;
+  onEnded?: () => void;
+  onPlay?: () => void;
+  isPlaying?: boolean;
+  onPause?: (index: number) => void;
+  index?: number;
 }
 
-export default function VoiceMessage({ audioSrc, autoPlay = false, className = '' }: VoiceMessageProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
+export default function VoiceMessage({ 
+  audioSrc, 
+  autoPlay = false, 
+  className = '', 
+  onEnded,
+  onPlay,
+  isPlaying: externalIsPlaying,
+  onPause,
+  index = 0
+}: VoiceMessageProps) {
+  const [internalIsPlaying, setInternalIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Use external isPlaying if provided, otherwise use internal state
+  const isPlaying = externalIsPlaying !== undefined ? externalIsPlaying : internalIsPlaying;
 
   // Generate stable waveform bar heights once
   const waveformBars = useMemo(() => 
@@ -31,10 +48,11 @@ export default function VoiceMessage({ audioSrc, autoPlay = false, className = '
       if (autoPlay) {
         try {
           await audio.play();
-          setIsPlaying(true);
+          setInternalIsPlaying(true);
+          onPlay?.();
         } catch (error) {
           console.log('Autoplay was prevented by the browser:', error);
-          setIsPlaying(false);
+          setInternalIsPlaying(false);
         }
       }
     };
@@ -44,12 +62,19 @@ export default function VoiceMessage({ audioSrc, autoPlay = false, className = '
     };
 
     const handleEnded = () => {
-      setIsPlaying(false);
+      setInternalIsPlaying(false);
       setCurrentTime(0);
+      onEnded?.();
     };
 
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
+    const handlePlay = () => {
+      setInternalIsPlaying(true);
+      onPlay?.();
+    };
+    const handlePause = () => {
+      setInternalIsPlaying(false);
+      onPause?.(index);
+    };
 
     audio.addEventListener('loadeddata', handleLoadedData);
     audio.addEventListener('timeupdate', handleTimeUpdate);
@@ -66,6 +91,20 @@ export default function VoiceMessage({ audioSrc, autoPlay = false, className = '
     };
   }, [autoPlay]);
 
+  // Handle external playback control
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || externalIsPlaying === undefined) return;
+
+    if (externalIsPlaying && audio.paused) {
+      audio.play().catch((error) => {
+        console.error('Failed to play audio externally:', error);
+      });
+    } else if (!externalIsPlaying && !audio.paused) {
+      audio.pause();
+    }
+  }, [externalIsPlaying]);
+
   const togglePlayPause = async () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -77,7 +116,7 @@ export default function VoiceMessage({ audioSrc, autoPlay = false, className = '
         await audio.play();
       } catch (error) {
         console.error('Failed to play audio:', error);
-        setIsPlaying(false);
+        setInternalIsPlaying(false);
       }
     }
   };

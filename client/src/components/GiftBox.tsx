@@ -17,6 +17,7 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [aiContent, setAiContent] = useState<AIContent | null>(null);
+  const [currentVoiceIndex, setCurrentVoiceIndex] = useState<number | null>(null);
 
   const generateAIContent = async () => {
     setIsLoading(true);
@@ -41,6 +42,30 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
     if (!isOpen) {
       setIsOpen(true);
       generateAIContent();
+      // Start playing first voice message
+      setTimeout(() => setCurrentVoiceIndex(0), 2000); // Start after loading completes
+    }
+  };
+
+  const handleVoiceEnded = (index: number) => {
+    if (index === 0) {
+      // First voice ended, start second voice
+      setCurrentVoiceIndex(1);
+    } else {
+      // All voices finished
+      setCurrentVoiceIndex(null);
+    }
+  };
+
+  const handleVoicePlay = (index: number) => {
+    // Pause all other voices and play only this one
+    setCurrentVoiceIndex(index);
+  };
+
+  const handleVoicePause = (index: number) => {
+    // Only stop if the paused voice is the currently active one
+    if (currentVoiceIndex === index) {
+      setCurrentVoiceIndex(null);
     }
   };
 
@@ -164,13 +189,23 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
                         <div className="space-y-3">
                           <VoiceMessage 
                             audioSrc={new URL('../../../attached_assets/WhatsApp Audio 2025-09-27 at 12.12.31_91090020.waptt_1758955432460.opus', import.meta.url).href}
-                            autoPlay={true}
+                            autoPlay={false}
                             className="mx-auto"
+                            isPlaying={currentVoiceIndex === 0}
+                            onEnded={() => handleVoiceEnded(0)}
+                            onPlay={() => handleVoicePlay(0)}
+                            onPause={handleVoicePause}
+                            index={0}
                           />
                           <VoiceMessage 
                             audioSrc={new URL('../../../attached_assets/WhatsApp Audio 2025-09-27 at 12.18.55_a67c03c1.waptt_1758955880114.opus', import.meta.url).href}
                             autoPlay={false}
                             className="mx-auto"
+                            isPlaying={currentVoiceIndex === 1}
+                            onEnded={() => handleVoiceEnded(1)}
+                            onPlay={() => handleVoicePlay(1)}
+                            onPause={handleVoicePause}
+                            index={1}
                           />
                         </div>
                       </div>
