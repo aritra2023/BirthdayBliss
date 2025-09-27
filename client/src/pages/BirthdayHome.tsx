@@ -70,38 +70,52 @@ Happy Birthday, beautiful! I love you more than words could ever express. ❤️
   const timelineEvents = [
     {
       id: '1',
-      date: 'March 15, 2025',
-      title: 'First Meeting',
-      description: 'The day our eyes first met at the coffee shop. I knew there was something special about you from that very moment.',
-      icon: 'sparkles'
+      date: 'March 2025',
+      title: 'Our first video call 💕',
+      description: 'The moment we connected through screens but our hearts were already so close. Your smile lit up my entire world.',
+      icon: 'video'
     },
     {
       id: '2', 
-      date: 'February 14, 2023',
-      title: 'First Date',
-      description: 'Our magical Valentine\'s day dinner where we talked until the restaurant closed. Time just stopped when I was with you.',
-      icon: 'heart'
+      date: 'April 2025',
+      title: 'Ek sath tuition jana 📚',
+      description: 'Together through every lesson, every chapter, every moment of learning. You made studying feel like an adventure.',
+      icon: 'book'
     },
     {
       id: '3',
-      date: 'May 20, 2023', 
-      title: 'First Trip Together',
-      description: 'Our weekend getaway to the mountains. Watching the sunrise with you was when I knew I was falling deeply in love.',
-      icon: 'mountain'
+      date: 'May 2025', 
+      title: 'Gaming memories 🎮',
+      description: 'Playing games together, sharing victories and defeats. Every match was more fun because you were by my side.',
+      icon: 'gamepad'
     },
     {
       id: '4',
-      date: 'August 10, 2023',
-      title: 'Moving In Together', 
-      description: 'The day we decided to share our lives and our home. Every morning with you feels like a blessing.',
-      icon: 'home'
+      date: 'June 2025',
+      title: 'Our weekly momo tradition 🥟', 
+      description: 'Every week, our special momo dates became the highlight. Simple moments that created the most beautiful memories.',
+      icon: 'utensils'
     },
     {
       id: '5',
-      date: 'December 25, 2023',
-      title: 'First Christmas',
-      description: 'Celebrating our first Christmas together, creating traditions that will last a lifetime. You make every holiday magical.',
-      icon: 'tree'
+      date: 'July 2025',
+      title: 'First movie date 🎬',
+      description: 'Lost in the story on screen, but found something even more beautiful in each other. The perfect date that felt like a dream.',
+      icon: 'film'
+    },
+    {
+      id: '6',
+      date: 'August 2025',
+      title: 'First planned outing ✨',
+      description: 'The beginning of our adventures together. Every step we took was the start of our beautiful journey.',
+      icon: 'sparkles'
+    },
+    {
+      id: '7',
+      date: 'September 2025',
+      title: 'লজ্জাবতী লতা আমার 💖',
+      description: 'আমার মনের মাঝে তুমি চিরকাল। My shy one, you will forever remain in my heart, bringing joy to every moment.',
+      icon: 'heart'
     }
   ];
 
