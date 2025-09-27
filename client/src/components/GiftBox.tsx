@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Gift, Sparkles, Heart, Loader2 } from 'lucide-react';
+import VoiceMessage from './VoiceMessage';
 
 interface GiftBoxProps {
   girlfriendName: string;
@@ -155,14 +156,16 @@ export default function GiftBox({ girlfriendName, className = '' }: GiftBoxProps
                         </motion.p>
                       </div>
 
-                      {/* Portrait Placeholder */}
-                      <div className="bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl p-8 text-center">
-                        <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center mb-4">
-                          <span className="text-3xl">👫</span>
-                        </div>
-                        <p className="text-muted-foreground">
-                          Our AI-generated cartoon portrait will appear here
-                        </p>
+                      {/* Voice Message */}
+                      <div className="space-y-4">
+                        <h3 className="font-romantic text-lg sm:text-xl text-center text-primary">
+                          A Special Message For You 💕
+                        </h3>
+                        <VoiceMessage 
+                          audioSrc={new URL('../../../attached_assets/WhatsApp Audio 2025-09-27 at 12.12.31_91090020.waptt_1758955432460.opus', import.meta.url).href}
+                          autoPlay={true}
+                          className="mx-auto"
+                        />
                       </div>
                     </motion.div>
                   ) : (
