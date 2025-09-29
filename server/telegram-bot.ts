@@ -8,8 +8,18 @@ class TelegramBotService {
   private bot: TelegramBot;
 
   constructor() {
-    this.bot = new TelegramBot(BOT_TOKEN, { polling: true });
-    this.setupCommands();
+    // Only enable polling in production or when explicitly set
+    const pollingEnabled = process.env.NODE_ENV === 'production' || process.env.ENABLE_TELEGRAM_POLLING === 'true';
+    
+    this.bot = new TelegramBot(BOT_TOKEN, { 
+      polling: pollingEnabled 
+    });
+    
+    if (pollingEnabled) {
+      this.setupCommands();
+    } else {
+      console.log('🤖 Telegram bot initialized (polling disabled for development)');
+    }
   }
 
   private setupCommands() {
