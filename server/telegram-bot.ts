@@ -1,5 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { storage } from './storage';
+import moment from 'moment-timezone';
 
 const BOT_TOKEN = '8112019635:AAEX9XX7DDxq7Lfj-XDDRwYx73BjLITB9HY';
 
@@ -42,7 +43,7 @@ class TelegramBotService {
             const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             
             statusMessage += `⏰ Active Countdown: ${days}d ${hours}h ${minutes}m remaining\n`;
-            statusMessage += `🎯 Target: ${targetTime.toLocaleString()}\n`;
+            statusMessage += `🎯 Target: ${targetTime.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST\n`;
             statusMessage += `👤 Set by: ${activeCountdown.setBy}\n\n`;
             statusMessage += `🔒 Site will be accessible after countdown ends.`;
           } else {
@@ -55,7 +56,8 @@ class TelegramBotService {
         
         statusMessage += `\n\n📝 Commands:\n`;
         statusMessage += `/start - Check bot and site status\n`;
-        statusMessage += `/settime DD/MM/YYYY_HH:MM AM/PM - Set countdown timer`;
+        statusMessage += `/settime DD/MM/YYYY_HH:MM AM/PM - Set countdown timer\n`;
+        statusMessage += `/unlocknow - Instantly unlock any active timer`;
         
         await this.bot.sendMessage(chatId, statusMessage);
         
@@ -110,7 +112,7 @@ class TelegramBotService {
 
         await this.bot.sendMessage(chatId,
           `✅ Countdown set successfully!\n\n` +
-          `🎯 Target: ${targetDate.toLocaleString()}\n` +
+          `🎯 Target: ${targetDate.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST\n` +
           `⏰ Time remaining: ${days}d ${hours}h ${minutes}m\n` +
           `👤 Set by: ${userName}\n\n` +
           `🔒 Site will be locked until countdown ends.`
@@ -122,12 +124,44 @@ class TelegramBotService {
       }
     });
 
+    // Handle /unlocknow command
+    this.bot.onText(/\/unlocknow/, async (msg) => {
+      const chatId = msg.chat.id;
+      const userName = msg.from?.first_name || 'User';
+
+      try {
+        // Check if there's an active countdown
+        const activeCountdown = await storage.getActiveCountdown();
+        
+        if (!activeCountdown || !activeCountdown.isActive) {
+          await this.bot.sendMessage(chatId, '📌 No active countdown to unlock. Site is already accessible!');
+          return;
+        }
+
+        // Deactivate all countdowns
+        await storage.deactivateAllCountdowns();
+
+        await this.bot.sendMessage(chatId,
+          `✅ Timer unlocked successfully!\n\n` +
+          `🔓 All countdowns have been deactivated\n` +
+          `👤 Unlocked by: ${userName}\n` +
+          `🌐 Site is now fully accessible!\n\n` +
+          `⏰ Previous timer was set by: ${activeCountdown.setBy || 'Unknown'}\n` +
+          `🎯 Original target was: ${activeCountdown.targetDate ? new Date(activeCountdown.targetDate).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : 'Unknown'}`
+        );
+
+      } catch (error) {
+        console.error('Error in /unlocknow command:', error);
+        await this.bot.sendMessage(chatId, '❌ Error unlocking timer. Please try again.');
+      }
+    });
+
     // Handle unknown commands
     this.bot.on('message', async (msg) => {
       const text = msg.text || '';
       
       // Skip if it's a known command
-      if (text.startsWith('/start') || text.startsWith('/settime')) {
+      if (text.startsWith('/start') || text.startsWith('/settime') || text.startsWith('/unlocknow')) {
         return;
       }
       
@@ -137,7 +171,8 @@ class TelegramBotService {
         await this.bot.sendMessage(chatId,
           '❓ Unknown command. Available commands:\n\n' +
           '/start - Check bot and site status\n' +
-          '/settime DD/MM/YYYY_HH:MM AM/PM - Set countdown timer\n\n' +
+          '/settime DD/MM/YYYY_HH:MM AM/PM - Set countdown timer\n' +
+          '/unlocknow - Instantly unlock any active timer\n\n' +
           'Example: /settime 25/12/2024_06:00 AM'
         );
       }
@@ -173,22 +208,18 @@ class TelegramBotService {
         hour = 0;
       }
 
-      const targetDate = new Date(
-        parseInt(year),
-        parseInt(month) - 1, // Month is 0-indexed
-        parseInt(day),
-        hour,
-        minute,
-        0,
-        0
-      );
+      // Create date string in IST timezone
+      const dateString = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00`;
+      
+      // Parse the date in IST timezone
+      const targetDateMoment = moment.tz(dateString, 'YYYY-MM-DD HH:mm:ss', 'Asia/Kolkata');
 
       // Validate the date
-      if (isNaN(targetDate.getTime())) {
+      if (!targetDateMoment.isValid()) {
         return null;
       }
 
-      return targetDate;
+      return targetDateMoment.toDate();
     } catch (error) {
       return null;
     }

@@ -7,6 +7,8 @@ import {
   type InsertBotStatus 
 } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { MongoClient, type Collection, type Db } from "mongodb";
+import moment from "moment-timezone";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -142,110 +144,170 @@ export class MemoryStorage implements IStorage {
   }
 }
 
-import { neon } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
-import { eq, and } from 'drizzle-orm';
-import { users, countdownSettings, botStatus } from '@shared/schema';
-
-// Use HTTP driver for better compatibility in serverless environments
-let db: ReturnType<typeof drizzle> | null = null;
+// MongoDB connection with hardcoded connection string for easy deployment
+const MONGODB_URI = "mongodb+srv://404movie:404moviepass@cluster0.fca76c9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+let mongoClient: MongoClient | null = null;
+let db: Db | null = null;
 let isDatabaseAvailable = false;
 
-// Initialize database connection and test it
-async function initializeDatabase() {
-  try {
-    if (process.env.DATABASE_URL) {
-      const sql = neon(process.env.DATABASE_URL);
-      db = drizzle({ client: sql });
-      
-      // Test the connection by running a simple query
-      await sql`SELECT 1 as test`;
-      isDatabaseAvailable = true;
-      console.log('🗄️  Database connection successful');
-    }
-  } catch (error) {
-    console.warn('Database connection failed, falling back to memory storage:', error);
-    isDatabaseAvailable = false;
-    db = null;
+// MongoDB Collections
+let usersCollection: Collection<User> | null = null;
+let countdownCollection: Collection<CountdownSettings> | null = null;
+let botStatusCollection: Collection<BotStatus> | null = null;
+
+let initializationPromise: Promise<void> | null = null;
+
+// Initialize MongoDB connection (singleton pattern to prevent multiple connections)
+async function initializeDatabase(): Promise<void> {
+  if (initializationPromise) {
+    return initializationPromise;
   }
+
+  initializationPromise = (async () => {
+    try {
+      // Check if already initialized
+      if (isDatabaseAvailable && db) {
+        return;
+      }
+
+      mongoClient = new MongoClient(MONGODB_URI);
+      await mongoClient.connect();
+      db = mongoClient.db("birthdayApp");
+      
+      // Initialize collections
+      usersCollection = db.collection<User>("users");
+      countdownCollection = db.collection<CountdownSettings>("countdowns");
+      botStatusCollection = db.collection<BotStatus>("botStatus");
+      
+      // Test the connection
+      await db.admin().ping();
+      isDatabaseAvailable = true;
+      console.log('🗄️  MongoDB connection successful');
+    } catch (error) {
+      console.warn('MongoDB connection failed, falling back to memory storage:', error);
+      isDatabaseAvailable = false;
+      db = null;
+      if (mongoClient) {
+        try {
+          await mongoClient.close();
+        } catch (closeError) {
+          console.warn('Error closing MongoDB client:', closeError);
+        }
+      }
+      mongoClient = null;
+      // Reset the initialization promise so it can be retried
+      initializationPromise = null;
+    }
+  })();
+
+  return initializationPromise;
 }
 
-// Initialize the database connection
-initializeDatabase();
-
-export class DatabaseStorage implements IStorage {
-  private ensureDb() {
-    if (!db) {
-      throw new Error('Database not initialized');
+export class MongoDBStorage implements IStorage {
+  private ensureCollections() {
+    if (!usersCollection || !countdownCollection || !botStatusCollection) {
+      throw new Error('MongoDB collections not initialized');
     }
-    return db;
+    return { usersCollection, countdownCollection, botStatusCollection };
+  }
+
+  // Helper function to get IST time
+  private getISTTime(): Date {
+    return moment().tz('Asia/Kolkata').toDate();
   }
 
   // User methods
   async getUser(id: string): Promise<User | undefined> {
-    const database = this.ensureDb();
-    const result = await database.select().from(users).where(eq(users.id, id));
-    return result[0];
+    const { usersCollection } = this.ensureCollections();
+    const result = await usersCollection.findOne({ id });
+    return result || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const database = this.ensureDb();
-    const result = await database.select().from(users).where(eq(users.username, username));
-    return result[0];
+    const { usersCollection } = this.ensureCollections();
+    const result = await usersCollection.findOne({ username });
+    return result || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const database = this.ensureDb();
-    const result = await database.insert(users).values(insertUser).returning();
-    return result[0];
+    const { usersCollection } = this.ensureCollections();
+    const user: User = {
+      id: randomUUID(),
+      username: insertUser.username,
+      password: insertUser.password,
+    };
+    await usersCollection.insertOne(user);
+    return user;
   }
 
-  // Countdown settings methods
+  // Countdown settings methods with IST timezone support
   async getActiveCountdown(): Promise<CountdownSettings | undefined> {
-    const database = this.ensureDb();
-    const result = await database.select().from(countdownSettings).where(eq(countdownSettings.isActive, true));
-    return result[0];
+    const { countdownCollection } = this.ensureCollections();
+    const result = await countdownCollection.findOne({ isActive: true });
+    return result || undefined;
   }
 
   async setCountdown(countdown: InsertCountdown): Promise<CountdownSettings> {
-    const database = this.ensureDb();
+    const { countdownCollection } = this.ensureCollections();
+    
     // First deactivate all existing countdowns
     await this.deactivateAllCountdowns();
     
-    // Insert new countdown
-    const result = await database.insert(countdownSettings).values({
-      ...countdown,
-      updatedAt: new Date(),
-    }).returning();
+    // Create new countdown with IST timestamp
+    const istTime = this.getISTTime();
+    const newCountdown: CountdownSettings = {
+      id: randomUUID(),
+      targetDate: countdown.targetDate ? moment(countdown.targetDate).tz('Asia/Kolkata').toDate() : null,
+      isActive: countdown.isActive ?? true,
+      setBy: countdown.setBy ?? null,
+      createdAt: istTime,
+      updatedAt: istTime,
+    };
     
-    return result[0];
+    await countdownCollection.insertOne(newCountdown);
+    return newCountdown;
   }
 
   async updateCountdown(id: string, updates: Partial<CountdownSettings>): Promise<CountdownSettings | undefined> {
-    const database = this.ensureDb();
-    const result = await database.update(countdownSettings)
-      .set({ ...updates, updatedAt: new Date() })
-      .where(eq(countdownSettings.id, id))
-      .returning();
+    const { countdownCollection } = this.ensureCollections();
     
-    return result[0];
+    const updateData = {
+      ...updates,
+      updatedAt: this.getISTTime(),
+    };
+    
+    const result = await countdownCollection.findOneAndUpdate(
+      { id },
+      { $set: updateData },
+      { returnDocument: 'after' }
+    );
+    
+    return result ?? undefined;
   }
 
   async deactivateAllCountdowns(): Promise<void> {
-    const database = this.ensureDb();
-    await database.update(countdownSettings)
-      .set({ isActive: false, updatedAt: new Date() });
+    const { countdownCollection } = this.ensureCollections();
+    await countdownCollection.updateMany(
+      {},
+      { 
+        $set: { 
+          isActive: false, 
+          updatedAt: this.getISTTime() 
+        }
+      }
+    );
   }
 
   // Bot status methods
   async getBotStatus(): Promise<BotStatus | undefined> {
-    const database = this.ensureDb();
-    const result = await database.select().from(botStatus).limit(1);
-    return result[0];
+    const { botStatusCollection } = this.ensureCollections();
+    const result = await botStatusCollection.findOne({});
+    return result || undefined;
   }
 
   async updateBotStatus(updates: Partial<BotStatus>): Promise<BotStatus> {
-    const database = this.ensureDb();
+    const { botStatusCollection } = this.ensureCollections();
+    
     // Get existing status or create if none exists
     let existingStatus = await this.getBotStatus();
     
@@ -256,40 +318,119 @@ export class DatabaseStorage implements IStorage {
       });
     }
 
-    const result = await database.update(botStatus)
-      .set({ ...updates, lastPing: new Date() })
-      .where(eq(botStatus.id, existingStatus.id))
-      .returning();
+    const updateData = {
+      ...updates,
+      lastPing: this.getISTTime(),
+    };
+
+    const result = await botStatusCollection.findOneAndUpdate(
+      { id: existingStatus.id },
+      { $set: updateData },
+      { returnDocument: 'after' }
+    );
     
-    return result[0];
+    return result ?? existingStatus;
   }
 
   async createBotStatus(status: InsertBotStatus): Promise<BotStatus> {
-    const database = this.ensureDb();
-    const result = await database.insert(botStatus).values(status).returning();
-    return result[0];
+    const { botStatusCollection } = this.ensureCollections();
+    
+    const botStatus: BotStatus = {
+      id: randomUUID(),
+      isActive: status.isActive ?? true,
+      lastPing: this.getISTTime(),
+      siteStatus: status.siteStatus ?? 'online',
+    };
+    
+    await botStatusCollection.insertOne(botStatus);
+    return botStatus;
   }
 }
 
 // Create a function to get the appropriate storage implementation
 function createStorage(): IStorage {
   if (isDatabaseAvailable && db) {
-    console.log('🗄️  Using database storage');
-    return new DatabaseStorage();
+    console.log('🗄️  Using MongoDB storage with IST timezone support');
+    return new MongoDBStorage();
   } else {
     console.log('💾 Using memory storage (development mode)');
     return new MemoryStorage();
   }
 }
 
-// Export the storage - will use memory storage initially and switch to database if available
-export const storage: IStorage = new MemoryStorage();
+// Create a proper storage instance that waits for initialization
+class StorageProxy implements IStorage {
+  private actualStorage: IStorage = new MemoryStorage();
+  private initialized: boolean = false;
 
-// Update the storage reference after database initialization
-initializeDatabase().then(() => {
-  // Replace the storage implementation if database is available
-  if (isDatabaseAvailable && db) {
-    Object.setPrototypeOf(storage, DatabaseStorage.prototype);
-    Object.assign(storage, new DatabaseStorage());
+  private async ensureInitialized(): Promise<IStorage> {
+    // Always try to initialize MongoDB if not already available
+    if (!isDatabaseAvailable || !db) {
+      await initializeDatabase();
+    }
+    
+    // Update storage based on current availability
+    if (isDatabaseAvailable && db && !(this.actualStorage instanceof MongoDBStorage)) {
+      this.actualStorage = new MongoDBStorage();
+      console.log('🗄️  Switched to MongoDB storage');
+    } else if (!isDatabaseAvailable && !(this.actualStorage instanceof MemoryStorage)) {
+      this.actualStorage = new MemoryStorage();
+      console.log('💾 Switched to memory storage (MongoDB unavailable)');
+    }
+    
+    this.initialized = true;
+    return this.actualStorage;
   }
-});
+
+  async getUser(id: string): Promise<User | undefined> {
+    const storage = await this.ensureInitialized();
+    return storage.getUser(id);
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const storage = await this.ensureInitialized();
+    return storage.getUserByUsername(username);
+  }
+
+  async createUser(user: InsertUser): Promise<User> {
+    const storage = await this.ensureInitialized();
+    return storage.createUser(user);
+  }
+
+  async getActiveCountdown(): Promise<CountdownSettings | undefined> {
+    const storage = await this.ensureInitialized();
+    return storage.getActiveCountdown();
+  }
+
+  async setCountdown(countdown: InsertCountdown): Promise<CountdownSettings> {
+    const storage = await this.ensureInitialized();
+    return storage.setCountdown(countdown);
+  }
+
+  async updateCountdown(id: string, updates: Partial<CountdownSettings>): Promise<CountdownSettings | undefined> {
+    const storage = await this.ensureInitialized();
+    return storage.updateCountdown(id, updates);
+  }
+
+  async deactivateAllCountdowns(): Promise<void> {
+    const storage = await this.ensureInitialized();
+    return storage.deactivateAllCountdowns();
+  }
+
+  async getBotStatus(): Promise<BotStatus | undefined> {
+    const storage = await this.ensureInitialized();
+    return storage.getBotStatus();
+  }
+
+  async updateBotStatus(updates: Partial<BotStatus>): Promise<BotStatus> {
+    const storage = await this.ensureInitialized();
+    return storage.updateBotStatus(updates);
+  }
+
+  async createBotStatus(status: InsertBotStatus): Promise<BotStatus> {
+    const storage = await this.ensureInitialized();
+    return storage.createBotStatus(status);
+  }
+}
+
+export const storage: IStorage = new StorageProxy();
