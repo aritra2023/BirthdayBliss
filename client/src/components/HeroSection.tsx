@@ -39,7 +39,7 @@ export default function HeroSection({ girlfriendName, onEnterSite }: HeroSection
             transition={{ duration: 1, delay: 2, ease: "easeOut" }}
             data-testid="hero-name"
           >
-            {girlfriendName} ❤️
+            Madamji
           </motion.div>
           
           {/* Subtitle */}
