@@ -62,8 +62,10 @@ export default function AudioPlayer({ src, autoPlay = false, className = '' }: A
     }
   };
 
-  // Mock audio since we don't have an actual audio file
-  const hasSrc = Boolean(src);
+  // Only render if there's an audio source
+  if (!src) {
+    return null;
+  }
 
   return (
     <motion.div
@@ -73,14 +75,12 @@ export default function AudioPlayer({ src, autoPlay = false, className = '' }: A
       transition={{ duration: 0.5, delay: 1 }}
       data-testid="audio-player"
     >
-      {hasSrc && (
-        <audio
-          ref={audioRef}
-          src={src}
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-        />
-      )}
+      <audio
+        ref={audioRef}
+        src={src}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
       
       <div className="flex items-center space-x-3">
         {/* Play/Pause Button */}
@@ -88,7 +88,6 @@ export default function AudioPlayer({ src, autoPlay = false, className = '' }: A
           onClick={togglePlay}
           className="p-2 rounded-full bg-primary text-primary-foreground hover-elevate"
           data-testid="button-play-pause"
-          disabled={!hasSrc}
         >
           {isPlaying ? (
             <Pause className="w-4 h-4" />
@@ -102,7 +101,6 @@ export default function AudioPlayer({ src, autoPlay = false, className = '' }: A
           onClick={toggleMute}
           className="p-2 rounded-full hover-elevate"
           data-testid="button-mute"
-          disabled={!hasSrc}
         >
           {isMuted ? (
             <VolumeX className="w-4 h-4 text-muted-foreground" />
@@ -121,7 +119,6 @@ export default function AudioPlayer({ src, autoPlay = false, className = '' }: A
             value={volume}
             onChange={handleVolumeChange}
             className="w-20 h-1 bg-muted rounded-lg appearance-none cursor-pointer"
-            disabled={!hasSrc}
             data-testid="volume-slider"
           />
         </div>
@@ -135,12 +132,6 @@ export default function AudioPlayer({ src, autoPlay = false, className = '' }: A
           🎵
         </motion.div>
       </div>
-
-      {!hasSrc && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xs text-muted-foreground">Audio Preview</span>
-        </div>
-      )}
     </motion.div>
   );
 }
