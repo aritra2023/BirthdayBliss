@@ -225,6 +225,22 @@ class TelegramBotService {
     }
   }
 
+  public async sendNotification(message: string, chatId?: number) {
+    try {
+      // If no specific chatId provided, you might want to store admin chat IDs
+      // For now, we'll try to send to the most recent chat or skip
+      if (chatId) {
+        await this.bot.sendMessage(chatId, message);
+      } else {
+        // Log the notification instead of sending if no chatId
+        console.log('📢 Notification (no chat ID):', message);
+      }
+    } catch (error) {
+      console.error('Error sending notification:', error);
+      throw error;
+    }
+  }
+
   public stop() {
     this.bot.stopPolling();
   }

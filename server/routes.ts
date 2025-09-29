@@ -103,6 +103,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Track visitor access
+  app.post('/api/track-visitor', async (req, res) => {
+    try {
+      const { timestamp, userAgent, ip } = req.body;
+      
+      // Log visitor access
+      console.log(`🔍 New visitor detected:`, {
+        timestamp,
+        userAgent: userAgent?.slice(0, 100) + '...',
+        ip: ip || req.ip || 'unknown'
+      });
+
+      // Store visitor info (you can expand this to save to database if needed)
+      const visitorInfo = {
+        timestamp: timestamp || new Date().toISOString(),
+        userAgent: userAgent || 'unknown',
+        ip: ip || req.ip || 'unknown',
+        accessTime: new Date().toISOString()
+      };
+
+      // Send notification to Telegram bot if available
+      if (telegramBot) {
+        try {
+          const message = `🚨 New visitor detected!\n⏰ Time: ${visitorInfo.accessTime}\n🌐 IP: ${visitorInfo.ip}\n📱 Device: ${visitorInfo.userAgent?.slice(0, 50)}...`;
+          await telegramBot.sendNotification(message);
+        } catch (botError) {
+          console.log('Failed to send Telegram notification:', botError);
+        }
+      }
+
+      res.json({ 
+        success: true, 
+        message: 'Visitor tracked successfully',
+        visitorInfo
+      });
+    } catch (error) {
+      console.error('Error tracking visitor:', error);
+      res.status(500).json({ error: 'Failed to track visitor' });
+    }
+  });
+
   const httpServer = createServer(app);
 
   // Graceful shutdown

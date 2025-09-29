@@ -11,6 +11,7 @@ import FireworksEnding from '@/components/FireworksEnding';
 import FloatingHeartCursor from '@/components/FloatingHeartCursor';
 import AudioPlayer from '@/components/AudioPlayer';
 import CountdownDisplay from '@/components/CountdownDisplay';
+import CuteLockPage from '@/components/CuteLockPage';
 
 interface AccessStatus {
   isAccessible: boolean;
@@ -226,9 +227,11 @@ Happy Birthday, beautiful! I love you more than words could ever express. ❤️
           </motion.div>
         )}
       </AnimatePresence>
-      {/* Access Control - Show countdown if site is locked */}
+      {/* Access Control - Show cute lock page if site is locked */}
       {accessStatus && !accessStatus.isAccessible && (
-        <CountdownDisplay 
+        <CuteLockPage 
+          targetDate={accessStatus.targetDate}
+          timeLeft={accessStatus.timeLeft}
           onAccessGranted={() => {
             refetchAccess();
           }}
