@@ -28,11 +28,14 @@ export interface IStorage {
   createBotStatus(status: InsertBotStatus): Promise<BotStatus>;
 }
 
-import { drizzle } from 'drizzle-orm/neon-serverless';
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
 import { eq, and } from 'drizzle-orm';
 import { users, countdownSettings, botStatus } from '@shared/schema';
 
-const db = drizzle(process.env.DATABASE_URL!);
+// Use HTTP driver for better compatibility in serverless environments
+const sql = neon(process.env.DATABASE_URL!);
+const db = drizzle({ client: sql });
 
 export class DatabaseStorage implements IStorage {
   // User methods

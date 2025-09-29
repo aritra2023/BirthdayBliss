@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import HeroSection from '@/components/HeroSection';
 import TypewriterText from '@/components/TypewriterText';
 import PhotoStack from '@/components/PhotoCarousel';
@@ -9,10 +10,25 @@ import GiftBox from '@/components/GiftBox';
 import FireworksEnding from '@/components/FireworksEnding';
 import FloatingHeartCursor from '@/components/FloatingHeartCursor';
 import AudioPlayer from '@/components/AudioPlayer';
+import CountdownDisplay from '@/components/CountdownDisplay';
+
+interface AccessStatus {
+  isAccessible: boolean;
+  reason?: string;
+  targetDate?: string;
+  timeLeft?: number;
+  setBy?: string;
+}
 
 export default function BirthdayHome() {
   const [currentSection, setCurrentSection] = useState(0);
   const [showSurprise, setShowSurprise] = useState(false);
+
+  // Check access status
+  const { data: accessStatus, refetch: refetchAccess } = useQuery<AccessStatus>({
+    queryKey: ['/api/access-status'],
+    refetchInterval: 5000, // Refetch every 5 seconds
+  });
 
   //todo: replace with real data
   const girlfriendName = "My Love";
@@ -210,6 +226,14 @@ Happy Birthday, beautiful! I love you more than words could ever express. ❤️
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Access Control - Show countdown if site is locked */}
+      {accessStatus && !accessStatus.isAccessible && (
+        <CountdownDisplay 
+          onAccessGranted={() => {
+            refetchAccess();
+          }}
+        />
+      )}
     </div>
   );
 }
