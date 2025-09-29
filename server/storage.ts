@@ -144,11 +144,48 @@ export class MemoryStorage implements IStorage {
   }
 }
 
-// MongoDB connection with hardcoded connection string for easy deployment
-const MONGODB_URI = "mongodb+srv://404movie:404moviepass@cluster0.fca76c9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// MongoDB connection from environment variable
+const MONGODB_URI = process.env.MONGODB_URI || '';
 let mongoClient: MongoClient | null = null;
 let db: Db | null = null;
 let isDatabaseAvailable = false;
+
+// Database connection with retry logic
+const connectWithRetry = async (uri: string, maxRetries = 5, delay = 2000): Promise<MongoClient> => {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`🔄 Database connection attempt ${attempt}/${maxRetries}`);
+      
+      const client = new MongoClient(uri, {
+        connectTimeoutMS: 10000,
+        serverSelectionTimeoutMS: 10000,
+        maxPoolSize: 10,
+        retryWrites: true,
+        retryReads: true
+      });
+      
+      await client.connect();
+      await client.db().admin().ping();
+      console.log('✅ Database connection successful');
+      return client;
+      
+    } catch (error) {
+      console.error(`❌ Database connection attempt ${attempt} failed:`, error instanceof Error ? error.message : error);
+      
+      if (attempt === maxRetries) {
+        console.error('💀 All database connection attempts failed');
+        throw new Error(`Failed to connect to database after ${maxRetries} attempts: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
+      
+      console.log(`⏳ Retrying in ${delay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      // Exponential backoff with jitter to prevent thundering herd
+      delay = Math.min(delay * 1.5 + Math.random() * 1000, 30000);
+    }
+  }
+  
+  throw new Error('Unexpected error in database connection');
+};
 
 // MongoDB Collections
 let usersCollection: Collection<User> | null = null;
@@ -157,41 +194,51 @@ let botStatusCollection: Collection<BotStatus> | null = null;
 
 let initializationPromise: Promise<void> | null = null;
 
-// Initialize MongoDB connection (singleton pattern to prevent multiple connections)
+// Initialize MongoDB connection with retry logic
 async function initializeDatabase(): Promise<void> {
   if (initializationPromise) {
     return initializationPromise;
   }
 
   initializationPromise = (async () => {
+    // Skip if no MongoDB URI provided
+    if (!MONGODB_URI) {
+      console.log('💾 No MongoDB URI provided, using memory storage');
+      return;
+    }
+
     try {
       // Check if already initialized
       if (isDatabaseAvailable && db) {
         return;
       }
 
-      mongoClient = new MongoClient(MONGODB_URI);
-      await mongoClient.connect();
-      db = mongoClient.db("birthdayApp");
+      console.log('🔄 Initializing MongoDB connection...');
+      const client = await connectWithRetry(MONGODB_URI, 3, 2000);
+      mongoClient = client;
+      db = client.db("birthdayApp");
       
       // Initialize collections
       usersCollection = db.collection<User>("users");
       countdownCollection = db.collection<CountdownSettings>("countdowns");
       botStatusCollection = db.collection<BotStatus>("botStatus");
       
-      // Test the connection
+      // Test the connection with a simple operation
       await db.admin().ping();
       isDatabaseAvailable = true;
-      console.log('🗄️  MongoDB connection successful');
+      console.log('✅ MongoDB connection and collections initialized successfully');
     } catch (error) {
-      console.warn('MongoDB connection failed, falling back to memory storage:', error);
+      console.error('❌ MongoDB initialization failed after retries:', error instanceof Error ? error.message : error);
+      console.log('💾 Falling back to memory storage');
+      
+      // Clean up failed connection
       isDatabaseAvailable = false;
       db = null;
       if (mongoClient) {
         try {
           await mongoClient.close();
         } catch (closeError) {
-          console.warn('Error closing MongoDB client:', closeError);
+          console.warn('⚠️  Error closing failed MongoDB client:', closeError);
         }
       }
       mongoClient = null;

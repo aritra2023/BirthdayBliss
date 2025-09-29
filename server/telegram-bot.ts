@@ -2,23 +2,46 @@ import TelegramBot from 'node-telegram-bot-api';
 import { storage } from './storage';
 import moment from 'moment-timezone';
 
-const BOT_TOKEN = '8112019635:AAEX9XX7DDxq7Lfj-XDDRwYx73BjLITB9HY';
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 
 class TelegramBotService {
   private bot: TelegramBot;
 
   constructor() {
-    // Only enable polling in production or when explicitly set
-    const pollingEnabled = process.env.NODE_ENV === 'production' || process.env.ENABLE_TELEGRAM_POLLING === 'true';
-    
-    this.bot = new TelegramBot(BOT_TOKEN, { 
-      polling: pollingEnabled 
-    });
-    
-    if (pollingEnabled) {
-      this.setupCommands();
-    } else {
-      console.log('🤖 Telegram bot initialized (polling disabled for development)');
+    try {
+      // Validate bot token
+      if (!BOT_TOKEN || BOT_TOKEN.length < 10) {
+        throw new Error('Telegram bot token is not configured properly');
+      }
+      
+      // Only enable polling in production or when explicitly set
+      const pollingEnabled = process.env.NODE_ENV === 'production' || process.env.ENABLE_TELEGRAM_POLLING === 'true';
+      
+      this.bot = new TelegramBot(BOT_TOKEN, { 
+        polling: pollingEnabled
+      });
+      
+      // Add error handlers for the bot
+      this.bot.on('error', (error) => {
+        console.error('❌ Telegram Bot Error:', error);
+      });
+
+      this.bot.on('polling_error', (error) => {
+        console.error('❌ Telegram Polling Error:', error);
+        if (error.message.includes('409 Conflict')) {
+          console.log('⚠️  Multiple bot instances detected, stopping polling...');
+          this.bot.stopPolling();
+        }
+      });
+      
+      if (pollingEnabled) {
+        this.setupCommands();
+      } else {
+        console.log('🤖 Telegram bot initialized (polling disabled for development)');
+      }
+    } catch (error) {
+      console.error('❌ Failed to initialize Telegram bot:', error);
+      throw error;
     }
   }
 
@@ -237,22 +260,30 @@ class TelegramBotService {
 
   public async sendNotification(message: string, chatId?: number) {
     try {
-      // If no specific chatId provided, you might want to store admin chat IDs
-      // For now, we'll try to send to the most recent chat or skip
+      // If no specific chatId provided, log the notification instead
       if (chatId) {
-        await this.bot.sendMessage(chatId, message);
+        await this.bot.sendMessage(chatId, message, {
+          parse_mode: 'Markdown'
+        });
+        console.log(`📤 Notification sent to chat ${chatId}`);
       } else {
         // Log the notification instead of sending if no chatId
         console.log('📢 Notification (no chat ID):', message);
       }
     } catch (error) {
-      console.error('Error sending notification:', error);
-      throw error;
+      console.error('❌ Error sending notification:', error instanceof Error ? error.message : error);
+      // Don't throw error, just log it to prevent breaking the application
     }
   }
 
   public stop() {
-    this.bot.stopPolling();
+    try {
+      console.log('🛑 Stopping Telegram bot...');
+      this.bot.stopPolling();
+      console.log('✅ Telegram bot stopped successfully');
+    } catch (error) {
+      console.error('❌ Error stopping Telegram bot:', error);
+    }
   }
 }
 

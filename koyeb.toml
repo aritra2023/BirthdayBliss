@@ -1,0 +1,42 @@
+[app]
+name = "birthday-website"
+
+[[services]]
+name = "web"
+type = "web"
+instance_type = "nano"
+regions = ["was"]
+# Ensure single instance to prevent Telegram polling conflicts
+min_scale = 1
+max_scale = 1
+
+[services.build]
+command = "npm run build"
+
+[services.ports]
+port = 5000
+protocol = "http"
+
+[services.run_command]
+command = "npm start"
+
+[services.env]
+NODE_ENV = "production"
+ENABLE_TELEGRAM_POLLING = "true"
+# Add these environment variables in Koyeb dashboard:
+# MONGODB_URI = "your-mongodb-connection-string"
+# TELEGRAM_BOT_TOKEN = "your-telegram-bot-token"
+
+[services.health_check]
+path = "/ready"
+port = 5000
+timeout = "15s"
+interval = "30s"
+
+[services.readiness_check]
+path = "/ready"
+port = 5000
+timeout = "15s"
+
+[services.auto_deploy]
+branch = "main"
