@@ -1,0 +1,200 @@
+#10 0.938 npm warn While resolving: its-fine@2.0.0
+#10 0.938 npm warn Found: react@18.3.1
+#10 0.938 npm warn node_modules/react
+#10 0.938 npm warn   react@"^18.3.1" from the root project
+#10 0.938 npm warn   92 more (@floating-ui/react-dom, ...)
+#10 0.938 npm warn
+#10 0.938 npm warn Could not resolve dependency:
+#10 0.938 npm warn peer react@"^19.0.0" from its-fine@2.0.0
+#10 0.938 npm warn node_modules/react-konva/node_modules/its-fine
+#10 0.938 npm warn   its-fine@"^2.0.0" from react-konva@19.0.10
+#10 0.938 npm warn   node_modules/react-konva
+#10 0.938 npm warn
+#10 0.938 npm warn Conflicting peer dependency: react@19.1.1
+#10 0.938 npm warn node_modules/react
+#10 0.938 npm warn   peer react@"^19.0.0" from its-fine@2.0.0
+#10 0.938 npm warn   node_modules/react-konva/node_modules/its-fine
+#10 0.938 npm warn     its-fine@"^2.0.0" from react-konva@19.0.10
+#10 0.938 npm warn     node_modules/react-konva
+#10 1.027 npm warn ERESOLVE overriding peer dependency
+#10 1.027 npm warn While resolving: react-reconciler@0.32.0
+#10 1.027 npm warn Found: react@18.3.1
+#10 1.027 npm warn node_modules/react
+#10 1.027 npm warn   react@"^18.3.1" from the root project
+#10 1.027 npm warn   92 more (@floating-ui/react-dom, ...)
+#10 1.027 npm warn
+#10 1.027 npm warn Could not resolve dependency:
+#10 1.027 npm warn peer react@"^19.1.0" from react-reconciler@0.32.0
+#10 1.027 npm warn node_modules/react-konva/node_modules/react-reconciler
+#10 1.027 npm warn   react-reconciler@"0.32.0" from react-konva@19.0.10
+#10 1.027 npm warn   node_modules/react-konva
+#10 1.027 npm warn
+#10 1.027 npm warn Conflicting peer dependency: react@19.1.1
+#10 1.027 npm warn node_modules/react
+#10 1.027 npm warn   peer react@"^19.1.0" from react-reconciler@0.32.0
+#10 1.027 npm warn   node_modules/react-konva/node_modules/react-reconciler
+#10 1.027 npm warn     react-reconciler@"0.32.0" from react-konva@19.0.10
+#10 1.027 npm warn     node_modules/react-konva
+#10 1.252 npm warn ERESOLVE overriding peer dependency
+#10 1.252 npm warn While resolving: @react-three/fiber@9.3.0
+#10 1.252 npm warn Found: react@18.3.1
+#10 1.252 npm warn node_modules/react
+#10 1.252 npm warn   react@"^18.3.1" from the root project
+#10 1.252 npm warn   92 more (@floating-ui/react-dom, ...)
+#10 1.252 npm warn
+#10 1.252 npm warn Could not resolve dependency:
+#10 1.252 npm warn peer react@"^19.0.0" from @react-three/fiber@9.3.0
+#10 1.252 npm warn node_modules/react-spring/node_modules/@react-three/fiber
+#10 1.252 npm warn   peer @react-three/fiber@">=6.0" from @react-spring/three@10.0.3
+#10 1.252 npm warn   node_modules/react-spring/node_modules/@react-spring/three
+#10 1.252 npm warn
+#10 1.252 npm warn Conflicting peer dependency: react@19.1.1
+#10 1.252 npm warn node_modules/react
+#10 1.252 npm warn   peer react@"^19.0.0" from @react-three/fiber@9.3.0
+#10 1.252 npm warn   node_modules/react-spring/node_modules/@react-three/fiber
+#10 1.252 npm warn     peer @react-three/fiber@">=6.0" from @react-spring/three@10.0.3
+#10 1.252 npm warn     node_modules/react-spring/node_modules/@react-spring/three
+#10 1.272 npm warn ERESOLVE overriding peer dependency
+#10 1.272 npm warn While resolving: @react-three/fiber@9.3.0
+#10 1.272 npm warn Found: react-dom@18.3.1
+#10 1.272 npm warn node_modules/react-dom
+#10 1.272 npm warn   react-dom@"^18.3.1" from the root project
+#10 1.272 npm warn   54 more (@floating-ui/react-dom, @radix-ui/react-accordion, ...)
+#10 1.272 npm warn
+#10 1.272 npm warn Could not resolve dependency:
+#10 1.272 npm warn peerOptional react-dom@"^19.0.0" from @react-three/fiber@9.3.0
+#10 1.272 npm warn node_modules/react-spring/node_modules/@react-three/fiber
+#10 1.272 npm warn   peer @react-three/fiber@">=6.0" from @react-spring/three@10.0.3
+#10 1.272 npm warn   node_modules/react-spring/node_modules/@react-spring/three
+#10 1.272 npm warn
+#10 1.272 npm warn Conflicting peer dependency: react-dom@19.1.1
+#10 1.272 npm warn node_modules/react-dom
+#10 1.272 npm warn   peerOptional react-dom@"^19.0.0" from @react-three/fiber@9.3.0
+#10 1.272 npm warn   node_modules/react-spring/node_modules/@react-three/fiber
+#10 1.272 npm warn     peer @react-three/fiber@">=6.0" from @react-spring/three@10.0.3
+#10 1.272 npm warn     node_modules/react-spring/node_modules/@react-spring/three
+#10 1.300 npm warn ERESOLVE overriding peer dependency
+#10 1.300 npm warn While resolving: react-native@0.80.2
+#10 1.300 npm warn Found: react@18.3.1
+#10 1.300 npm warn node_modules/react
+#10 1.300 npm warn   react@"^18.3.1" from the root project
+#10 1.300 npm warn   92 more (@floating-ui/react-dom, ...)
+#10 1.300 npm warn
+#10 1.300 npm warn Could not resolve dependency:
+#10 1.300 npm warn peer react@"^19.1.0" from react-native@0.80.2
+#10 1.300 npm warn node_modules/react-spring/node_modules/react-native
+#10 1.300 npm warn   peer react-native@">=0.78" from @react-spring/native@10.0.3
+#10 1.300 npm warn   node_modules/react-spring/node_modules/@react-spring/native
+#10 1.300 npm warn   2 more (@react-three/fiber, @react-native/virtualized-lists)
+#10 1.300 npm warn
+#10 1.300 npm warn Conflicting peer dependency: react@19.1.1
+#10 1.300 npm warn node_modules/react
+#10 1.300 npm warn   peer react@"^19.1.0" from react-native@0.80.2
+#10 1.300 npm warn   node_modules/react-spring/node_modules/react-native
+#10 1.300 npm warn     peer react-native@">=0.78" from @react-spring/native@10.0.3
+#10 1.300 npm warn     node_modules/react-spring/node_modules/@react-spring/native
+#10 1.300 npm warn     2 more (@react-three/fiber, @react-native/virtualized-lists)
+#10 1.331 npm warn ERESOLVE overriding peer dependency
+#10 1.331 npm warn While resolving: its-fine@2.0.0
+#10 1.331 npm warn Found: react@18.3.1
+#10 1.331 npm warn node_modules/react
+#10 1.331 npm warn   92 more (@floating-ui/react-dom, ...)
+#10 1.331 npm warn
+#10 1.331 npm warn Could not resolve dependency:
+#10 1.331 npm warn peer react@"^19.0.0" from its-fine@2.0.0
+#10 1.331 npm warn node_modules/react-spring/node_modules/@react-three/fiber/node_modules/its-fine
+#10 1.331 npm warn   its-fine@"^2.0.0" from @react-three/fiber@9.3.0
+#10 1.331 npm warn   node_modules/react-spring/node_modules/@react-three/fiber
+#10 1.331 npm warn
+#10 1.331 npm warn Conflicting peer dependency: react@19.1.1
+#10 1.331 npm warn node_modules/react
+#10 1.331 npm warn   peer react@"^19.0.0" from its-fine@2.0.0
+#10 1.331 npm warn   node_modules/react-spring/node_modules/@react-three/fiber/node_modules/its-fine
+#10 1.331 npm warn     its-fine@"^2.0.0" from @react-three/fiber@9.3.0
+#10 1.331 npm warn     node_modules/react-spring/node_modules/@react-three/fiber
+#10 1.358 npm warn ERESOLVE overriding peer dependency
+#10 1.358 npm warn While resolving: react-reconciler@0.31.0
+#10 1.358 npm warn Found: react@18.3.1
+#10 1.358 npm warn node_modules/react
+#10 1.358 npm warn   react@"^18.3.1" from the root project
+#10 1.358 npm warn   92 more (@floating-ui/react-dom, ...)
+#10 1.358 npm warn
+#10 1.358 npm warn Could not resolve dependency:
+#10 1.358 npm warn peer react@"^19.0.0" from react-reconciler@0.31.0
+#10 1.358 npm warn node_modules/react-spring/node_modules/@react-three/fiber/node_modules/react-reconciler
+#10 1.358 npm warn   react-reconciler@"^0.31.0" from @react-three/fiber@9.3.0
+#10 1.358 npm warn   node_modules/react-spring/node_modules/@react-three/fiber
+#10 1.358 npm warn
+#10 1.358 npm warn Conflicting peer dependency: react@19.1.1
+#10 1.358 npm warn node_modules/react
+#10 1.358 npm warn   peer react@"^19.0.0" from react-reconciler@0.31.0
+#10 1.358 npm warn   node_modules/react-spring/node_modules/@react-three/fiber/node_modules/react-reconciler
+#10 1.358 npm warn     react-reconciler@"^0.31.0" from @react-three/fiber@9.3.0
+#10 1.358 npm warn     node_modules/react-spring/node_modules/@react-three/fiber
+#10 1.360 npm warn EBADENGINE Unsupported engine {
+#10 1.360 npm warn EBADENGINE   package: '@google/genai@1.21.0',
+#10 1.360 npm warn EBADENGINE   required: { node: '>=20.0.0' },
+#10 1.360 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+#10 1.360 npm warn EBADENGINE }
+#10 3.010 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+#10 3.362 npm warn deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
+#10 3.652 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+#10 3.715 npm warn deprecated har-validator@5.1.5: this library is no longer supported
+#10 4.977 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#10 5.075 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#10 5.153 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#10 5.675 npm warn deprecated uuid@3.4.0: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
+#10 5.728 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#10 9.366 
+#10 9.366 added 875 packages, and audited 876 packages in 9s
+#10 9.366 
+#10 9.366 138 packages are looking for funding
+#10 9.366   run `npm fund` for details
+#10 9.370 
+#10 9.370 10 vulnerabilities (3 low, 5 moderate, 2 critical)
+#10 9.370 
+#10 9.370 To address issues that do not require attention, run:
+#10 9.370   npm audit fix
+#10 9.370 
+#10 9.370 To address all issues (including breaking changes), run:
+#10 9.370   npm audit fix --force
+#10 9.370 
+#10 9.370 Run `npm audit` for details.
+#10 9.371 npm notice
+#10 9.371 npm notice New major version of npm available! 10.8.2 -> 11.6.1
+#10 9.371 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.1
+#10 9.371 npm notice To update run: npm install -g npm@11.6.1
+#10 9.371 npm notice
+#10 DONE 14.0s
+
+#11 [5/6] COPY . .
+#11 DONE 0.2s
+
+#12 [6/6] RUN npm run build
+#12 0.143 
+#12 0.143 > rest-express@1.0.0 build
+#12 0.143 > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+#12 0.143 
+#12 0.147 sh: vite: not found
+#12 ERROR: process "/bin/sh -c npm run build" did not complete successfully: exit code: 127
+------
+ > importing cache manifest from registry01.prod.koyeb.com/k-41fa610c-8a3d-46ab-85aa-c988cfed7183/377b535d-59ce-47ea-8c48-310985a7849d-cache:latest:
+------
+------
+ > [6/6] RUN npm run build:
+0.143 
+0.143 > rest-express@1.0.0 build
+0.143 > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+0.143 
+0.147 sh: vite: not found
+------
+Dockerfile:15
+--------------------
+  13 |     
+  14 |     # Build the application
+  15 | >>> RUN npm run build
+  16 |     
+  17 |     # Expose port
+--------------------
+error: failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 127
+Build failed ❌
